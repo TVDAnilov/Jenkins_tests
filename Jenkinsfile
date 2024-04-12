@@ -1,28 +1,54 @@
 pipeline {
-    agent none // Не выбираем агента здесь, так как будем использовать несколько агентов параллельно
-
+    agent none
+    
     stages {
-        stage('Build and Test') {
-            agent { node { label 'node1' } } // Выбираем агент node1 для сборки и тестирования
+        stage('Приветствие') {
+            agent any
             steps {
-                echo 'Вытаскиваем код с гит'
+                echo "Привет, мир!"
             }
         }
-
-        stage('Parallel Actions') {
-            parallel { // Параллельный блок
-                stage('Node1') {
-                    agent { node { label 'node1' } } // Выбираем агент node1 для этой части
+        
+        stage('Подготовка') {
+            parallel {
+                stage('Сборка на node1') {
+                    agent { label 'node1' }
                     steps {
-                        echo 'Выполняется на node1'
-                     }
-                }
-                stage('Node2') {
-                    agent { node { label 'node2' } } // Выбираем агент node2 для этой части
-                    steps {
-                        echo 'Выполняется на node2'
+                        echo "Выполняется сборка на node1..."
                     }
                 }
+                stage('Сборка на node2') {
+                    agent { label 'node2' }
+                    steps {
+                        echo "Выполняется сборка на node2..."
+                    }
+                }
+            }
+        }
+        
+        stage('Тесты') {
+            parallel {
+                stage('Тесты на node1') {
+                    agent { label 'node1' }
+                    steps {
+                        echo "Выполняются тесты на node1..."
+                    }
+                }
+                stage('Тесты на node2') {
+                    agent { label 'node2' }
+                    steps {
+                        echo "Выполняются тесты на node2..."
+                        // Добавьте команды для запуска тестов на node2
+                    }
+                }
+            }
+        }
+        
+        stage('Сообщение после сборки') {
+            agent any
+            steps {
+                echo "Сборка и тесты завершены!"
+                // Добавьте команды для отправки сообщения после сборки и тестов
             }
         }
     }
