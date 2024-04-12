@@ -5,7 +5,7 @@ pipeline {
         stage('Build and Test') {
             agent { node { label 'node1' } } // Выбираем агент node1 для сборки и тестирования
             steps {
-                //git 'https://github.com/TVDAnilov/Jenkins_tests.git'
+                echo 'Вытаскиваем код с гит'
             }
         }
 
