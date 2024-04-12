@@ -1,31 +1,28 @@
 pipeline {
-    agent any
-    
+    agent none // Не выбираем агента здесь, так как будем использовать несколько агентов параллельно
+
     stages {
-        stage('Приветствие') {
+        stage('Build and Test') {
+            agent { node { label 'node1' } } // Выбираем агент node1 для сборки и тестирования
             steps {
-                powershell 'Write-Host "Привет, мир!"'
+                //git 'https://github.com/TVDAnilov/Jenkins_tests.git'
             }
         }
-        
-        stage('Сборка') {
-            steps {
-                powershell 'Write-Host "Выполняется сборка..."'
-                // Добавьте команды для сборки вашего проекта
-            }
-        }
-        
-        stage('Тесты') {
-            steps {
-                powershell 'Write-Host "Выполняются тесты..."'
-                // Добавьте команды для запуска тестов
-            }
-        }
-        
-        stage('Сообщение после сборки') {
-            steps {
-                powershell 'Write-Host "Сборка завершена!"'
-                // Добавьте команды для отправки сообщения после сборки
+
+        stage('Parallel Actions') {
+            parallel { // Параллельный блок
+                stage('Node1') {
+                    agent { node { label 'node1' } } // Выбираем агент node1 для этой части
+                    steps {
+                        echo 'Выполняется на node1'
+                     }
+                }
+                stage('Node2') {
+                    agent { node { label 'node2' } } // Выбираем агент node2 для этой части
+                    steps {
+                        echo 'Выполняется на node2'
+                    }
+                }
             }
         }
     }
