@@ -7,6 +7,12 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/TVDAnilov/Jenkins_tests.git'
             }
         }
+        stage('TestFolder') {
+            when { changeset "TestFolder/*"}
+            steps {
+                powershell 'Write-Host "TestFolder изменился!"'
+            }
+        }
         stage('Приветствие') {
             steps {
                 powershell 'Write-Host "Привет, мир!"'
