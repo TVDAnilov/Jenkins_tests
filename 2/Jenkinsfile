@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('TestFolder') {
+            steps {
+                powershell 'Write-Host "TestFolder изменился!"'
+            }
+        }
+        stage('Приветствие') {
+            steps {
+                powershell 'Write-Host "Привет, мир! Я файл из папки 2"'
+            }
+        }
+
+        stage('Сборка') {
+            steps {
+                powershell 'Write-Host "Выполняется сборка... файла 2"'
+                // Добавьте команды для сборки вашего проекта
+            }
+        }
+
+        stage('Тесты') {
+            steps {
+                powershell 'Write-Host "Выполняются тесты... файла 2"'
+                // Добавьте команды для запуска тестов
+            }
+        }
+
+        stage('Сообщение после сборки') {
+            steps {
+                powershell 'Write-Host "Сборкафайла 2  завершена! "'
+                // Добавьте команды для отправки сообщения после сборки
+            }
+        }
+    }
+}
