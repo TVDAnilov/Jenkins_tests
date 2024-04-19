@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('TestFolder') {
-            steps {
-                powershell 'Write-Host "TestFolder изменился!"'
-            }
-        }
         stage('Приветствие') {
             steps {
                 powershell 'Write-Host "Привет, мир! Я файл из папки 2"'
