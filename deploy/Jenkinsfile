@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    parameters{
+        run(name: "Source_build", projectName: "MyBiiigApp", description: "descript")
+        buildSelector name: "Copy_Artifact", description: "descript", defaultSelector: specific('Source_build_NUMBER')
+
+    }
+    stages {
+        stage('Copy Archive') {
+            steps {
+                copyArtifacts(
+                    projectName: "MyBiiigApp",
+                    selector: buildParameter('Copy_Artifact'),
+                    target: 'deploy/CopyArt'
+                )
+            }
+        }
+
+        stage('Сообщение после сборки') {
+            steps {
+                powershell 'Write-Host "Сборка завершена!"'
+                // Добавьте команды для отправки сообщения после сборки
+            }
+        }
+    }
+}
